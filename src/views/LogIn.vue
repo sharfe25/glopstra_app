@@ -95,6 +95,8 @@ export default {
         login(){
             const path = 'http://160.153.253.91:3200/login';
             axios.post(path, this.user).then((result) => {
+
+                localStorage.setItem('token', result.data.tokenbd)
                 if(result.data.error){
                     this.alert=true
                 }

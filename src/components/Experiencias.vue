@@ -1,52 +1,32 @@
 <template>
     <v-app class="main">
         <div class="contain">
-            <h1>Denuncias actuales</h1>
+            <h1>Experiencias</h1>
             <div class="contain_dashboard" >
                 
                 <v-simple-table>
                     <template v-slot:default>
                     <thead>
                         <tr>
-                        <th class="text-left">
-                            Nombre
-                        </th>
-                        <th class="text-left">
-                            Email
-                        </th>
-                        <th class="text-left">
-                            Tipo de denuncia
-                        </th>
-                        <th class="text-left">
-                            Dirección
-                        </th>
-                        <th class="text-left">
-                            Pais
-                        </th>
-                        
-                        <th class="text-left">
-                            Estado
-                        </th>
-                        <th class="text-left">
-                            ciudad
-                        </th>
-                        <th class="text-left">
-                            Comentarios
-                        </th>
+                            <th class="text-center">
+                                Tipo de experiencia
+                            </th>
+                            <th class="text-center">
+                                Calificación
+                            </th>
+                            <th class="text-center">
+                                Detalles
+                            </th>
+
                         </tr>
                     </thead>
                     <tbody>
                         <tr
-                            v-for="denuncia in denuncias" :key="denuncia._id"
+                            
                         >
-                        <td>{{denuncia.name}} {{denuncia.lastName}}</td>
-                        <td>{{denuncia.email}}</td>
-                        <td>{{denuncia.typeOfComplaint}}</td>
-                        <td>{{denuncia.direction}}</td>
-                        <td>{{denuncia.country}}</td>
-                        <td>{{denuncia.state}}</td>
-                        <td>{{denuncia.city}}</td>
-                        <td>{{denuncia.coments}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         </tr>
                     </tbody>
                     </template>
@@ -63,36 +43,30 @@ import axios from "axios";
 
 
 export default {
-    name: 'Reportes',
+    name: 'Denuncias',
     components: {
 
     },
     data:()=>({
-        info_denuncias:[],
+        info_denuncias:'',
+        
     }),
+    methods:{
+        
+        
+    },
     computed:{
         denuncias:function(){ 
             const path = 'http://160.153.253.91:3200/complaint';
             axios.get(path).then((respuesta) => {
-                
-                respuesta.data.forEach(d => {
-                    if(d.anonymous===true){
-                        d.name='Anonimo'
-                        d.lastName=''
-                        d.email='Anonimo'
-                    }
-                });
-                this.info_denuncias=respuesta.data
+                console.log(respuesta)
+                this.info_denuncias=respuesta
             })
             .catch((error) => {
                 console.log(error)
             })
             return this.info_denuncias
         }
-    },
-    methods:{
-        
-        
     },
     created () {
         

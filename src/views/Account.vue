@@ -63,6 +63,18 @@
                         </v-list-item>
                         
                     </v-list>
+
+                    <v-divider class="barra"></v-divider>
+
+                    <v-list dense >
+                        <v-list-item  @click="experiences" class="border" :class="opcion_click_experiences">
+                            <v-list-item-content>
+                                <v-list-item-title class="opcion_menu">Experiencias</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        
+                    </v-list>
+
                     <v-divider class="barra"></v-divider>
                     
                     <template v-slot:append>
@@ -97,6 +109,9 @@
                     <div class="process" :class="[ocultar_process,opcion_click_process]">
                         <Proceso/>
                     </div>
+                    <div class="experiences" :class="[ocultar_experiences,opcion_click_experiences]">
+                        <Experiencias/>
+                    </div>
                     <div class="config" :class="[ocultar_config,opcion_click_config]">
                         
                     </div>
@@ -112,14 +127,14 @@ import axios from "axios";
 import Home from '../components/Home.vue';
 import Proceso from '../components/Proceso.vue';
 import Reportes from '../components/Reportes.vue';
-
+import Experiencias from '../components/Experiencias.vue';
 export default {
   name: 'Account',
   components: {
     Home,
     Proceso,
-    Reportes
-    
+    Reportes,
+    Experiencias,
   },
   data:()=>({
         name:'Sharon',
@@ -127,56 +142,78 @@ export default {
         opcion_click_report:'',
         opcion_click_process:'',
         opcion_click_config:'',
+        opcion_click_experiences:'',
         ocultar_home:'',
         ocultar_config:'',
         ocultar_process:'',
         ocultar_report:'',
+        ocultar_experiences:'',
     }),
     methods:{
         dashboard(){
             this.opcion_click_home='opcion_click_home';
+            this.opcion_click_experiences='';
             this.opcion_click_report='';
             this.opcion_click_process='';
             this.opcion_click_config='';
             this.ocultar_config='ocultar';
             this.ocultar_process='ocultar';
             this.ocultar_report='ocultar';
+            this.ocultar_experiences='ocultar';
         },
         reports(){
             this.opcion_click_report='opcion_click_report';
+            this.opcion_click_experiences='';
             this.opcion_click_home='';
             this.opcion_click_process='';
             this.opcion_click_config='';
             this.ocultar_home='ocultar';
             this.ocultar_config='ocultar';
             this.ocultar_process='ocultar';
+            this.ocultar_experiences='ocultar';
         },
         process(){
             this.opcion_click_process='opcion_click_process';
+            this.opcion_click_experiences='';
             this.opcion_click_report='';
             this.opcion_click_home='';
             this.opcion_click_config='';
             this.ocultar_home='ocultar';
             this.ocultar_config='ocultar';
             this.ocultar_report='ocultar';
+            this.ocultar_experiences='ocultar';
+        },
+        experiences(){
+            this.opcion_click_experiences='opcion_click_experiences';
+            this.opcion_click_process='';
+            this.opcion_click_report='';
+            this.opcion_click_home='';
+            this.opcion_click_config='';
+            this.ocultar_home='ocultar';
+            this.ocultar_config='ocultar';
+            this.ocultar_report='ocultar';
+            this.ocultar_process='ocultar';
         },
         config(){
             this.opcion_click_config='opcion_click_config';
+            this.opcion_click_experiences='';
             this.opcion_click_report='';
             this.opcion_click_home='';
             this.opcion_click_process='';
             this.ocultar_home='ocultar';
             this.ocultar_process='ocultar';
             this.ocultar_report='ocultar';
+            this.ocultar_experiences='ocultar';
         },
         logout(){
             let email= {email: localStorage.getItem('email')}
             const path = 'http://160.153.253.91:3200/logout';
             axios.post(path, email).then((result) => {
-                console.log(result)
                 if (result.data.resp==="exito") {
-                    this.$router.push('/LogIn');
                     localStorage.removeItem('email')
+                    localStorage.removeItem('token')
+                    this.$router.push('/LogIn');
+                    
                 }
             })
             .catch((error) => {
@@ -241,15 +278,15 @@ export default {
     color:white;
     margin-left:0.3rem;
 }
-.opcion_click_home,.opcion_click_report,.opcion_click_process, .opcion_click_config{
+.opcion_click_home,.opcion_click_report,.opcion_click_process, .opcion_click_config, .opcion_click_experiences{
     background-color: rgba(255, 255, 255, 0.39);
     color:rgba(209,68,62,1);
     display: inherit !important;
 }
-.opcion_click_home.border,.opcion_click_report.border,.opcion_click_process.border, .opcion_click_config.border{
+.opcion_click_home.border,.opcion_click_report.border,.opcion_click_process.border, .opcion_click_config.border,.opcion_click_experiences.border{
     border-left: 5px solid #D1443E;
 }
-.opcion_click_home .opcion_menu,.opcion_click_report .opcion_menu,.opcion_click_process .opcion_menu, .opcion_click_config .opcion_menu{
+.opcion_click_home .opcion_menu,.opcion_click_report .opcion_menu,.opcion_click_process .opcion_menu, .opcion_click_config .opcion_menu, .opcion_click_experiences .opcion_menu{
     padding-top: .2rem;
     color:rgb(204, 49, 44);
 }
