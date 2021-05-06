@@ -35,10 +35,9 @@
                             {{descargas}}
                         </v-card-text>
 
-                        <v-list-item-content>
-                            <v-list-item-title>
-                                <img class="icon_arrow icon mr-1" src="../assets/dashboard/up_w.png">
-                                {{actual}}
+                        <v-list-item-content class="py-1">
+                            <v-list-item-title class="my-0 overline text-center">
+                                Totales de Glopstra
                             </v-list-item-title>
                         </v-list-item-content>
                         </v-card>
@@ -60,7 +59,7 @@
                                 sm="8"
                             >
                                 <div class="overline mb-4">
-                                    Registros 
+                                    Usuarios 
                                 </div>
                             </v-col>
                             <v-col
@@ -72,13 +71,12 @@
                         </v-row>
                         
                         <v-card-text class="headline font-weight-bold  text-center mt-4">
-                            2156151
+                            {{users}}
                         </v-card-text>
 
-                        <v-list-item-content>
-                            <v-list-item-title>
-                                <img class="icon_arrow icon mr-1" src="../assets/dashboard/down.png">
-                                484
+                        <v-list-item-content class="py-1">
+                            <v-list-item-title class="my-0 overline text-center">
+                                En Glopstra
                             </v-list-item-title>
                         </v-list-item-content>
                         </v-card>
@@ -99,7 +97,7 @@
                                 sm="8"
                             >
                                 <div class="overline mb-4">
-                                    Datos 
+                                    Familiares
                                 </div>
                             </v-col>
                             <v-col
@@ -123,6 +121,74 @@
                         </v-card>
                     </v-col>
                 </v-row>
+                <v-row no-gutters class="mt-6" justify="space-around">
+                    <v-col
+                        cols="12"
+                        sm="12"
+                        md="3"
+                    >
+                        <v-card
+                        class="card_datos gradiente pl-4 pa-2"
+                        outlined
+                        tile
+                        elevation="4"
+                        >
+                            <div class="overline mb-0">
+                                Empresas 
+                            </div>
+                        
+                        <v-card-text class="headline font-weight-bold white--text text-center mt-0 mb-3">
+                            {{descargas}}
+                        </v-card-text>
+
+                        
+                        </v-card>
+                    </v-col>
+                    <v-col
+                        cols="12"
+                        sm="12"
+                        md="3"
+                        
+                    >
+                        <v-card
+                        class="card_datos pl-4 pa-2"
+                        outlined
+                        tile
+                        elevation="4"
+                        >
+                        <div class="overline mb-0">
+                            Sucursales
+                        </div>
+                        
+                        
+                        <v-card-text class="headline font-weight-bold  text-center mt-0 mb-3">
+                            {{users}}
+                        </v-card-text>
+
+                        </v-card>
+                    </v-col>
+                    <v-col
+                        cols="12"
+                        sm="12"
+                        md="3"
+                    >
+                        <v-card
+                        class="card_datos  pl-4 pa-2"
+                        outlined
+                        tile
+                        elevation="4"
+                        >
+                        <div class="overline mb-0">
+                            Empleados
+                        </div>
+                        
+                        <v-card-text class="headline font-weight-bold text-center mt-0 mb-3">
+                            1212121212
+                        </v-card-text>
+
+                        </v-card>
+                    </v-col>
+                </v-row>
                 <v-row justify="space-around">
                     <v-col 
                     cols="12"
@@ -136,45 +202,53 @@
                         <v-row no-gutters>
                             <v-col
                                 cols="12"
-                                sm="8"
+                                sm="4"
                             >
                                 <div class="overline mb-2">
                                     Descargas 
                                 </div>
                             </v-col>
                             <v-col
-                                sm="4"
+                                sm="8"
                                 class="d-flex col"
                             >
+                                
+                                <v-autocomplete rounded class="autocomplete"  v-model="year_select" @change="mostrar_descargas_months" :items="years"></v-autocomplete>
+                                <v-btn
+                                class="ma-2 rango_modulo_btn"
+                                text
+                                color="rgba(240,191,55,1)"
+                                @click="modulo_uno=!modulo_uno;mostrar_modulos_years();"
+                                >
+                                    {{rango_modulo}}
+                                </v-btn>
                                 <img class="icon_calendario mt-1 mr-3 icon" src="../assets/dashboard/calendario.png">
                             </v-col>
                         </v-row>
                         
                         <div 
-                        v-for="(i, index) in 6"
+                        v-for="(i, index) in modulos_year"
                         :key="index">
                         <v-row  >
                             <v-col
                                 cols="12"
-                                sm="2"
+                                sm="3"
+                                class="overline"
                             >
-                                
-                                     {{meses[index]}}
-                                
+                                {{meses[i]}}
                             </v-col>
                             <v-col
-                                sm="10"
-                                class="d-flex col"
+                                sm="9"
+                                class="d-flex"
                             >
                                <v-progress-linear
                                 color="rgba(240,191,55,1)"
                                 height="25"
-                                :value="descargas_year_month[0][meses[index].toLowerCase()]===undefined? 0:descargas_year_month[0][meses[index].toLowerCase()]"
-                                
+                                :value="descargas_year_month.length>0?descargas_mes[meses[i].toLowerCase()]:0"
                                 class="mb-3"
                                 >
                                 <template>
-                                    <strong>{{ descargas_year_month[0][meses[index].toLowerCase()]===undefined? 0:descargas_year_month[0][meses[index].toLowerCase()] }}</strong>
+                                    <strong >{{descargas_year_month.length>0?descargas_mes[meses[i].toLowerCase()]:0}}</strong>
                                 </template>
                                 </v-progress-linear>
                             </v-col>
@@ -210,12 +284,35 @@ export default {
 
     },
     data:()=>({
+        descargas_mes:{},
+        users:0,
+        rango_modulo:'Julio - Diciembre',
+        year_select:new Date().getFullYear().toString(),
+        modulo_uno:true,
+        modulos_year:[],
         actual:0,
+        years:[],
         total_descargas:0,
         meses: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
         descargas_year_month:[]
     }),
     methods:{
+        mostrar_modulos_years(){
+ 
+            if (this.modulo_uno==true) {
+                this.modulos_year=[0,1,2,3,4,5]
+                this.rango_modulo='Julio - Diciembre'
+            }else{
+                this.modulos_year=[6,7,8,9,10,11]
+                this.rango_modulo='Enero - Junio'
+            }
+        },
+        llenar_years(){
+            this.descargas_year_month.forEach(element =>{
+                this.years.push(element.year)
+            })
+        },
+        
         search_year(year,month){
             if(year && month){
                 if (this.descargas_year_month.length>0) {
@@ -274,59 +371,86 @@ export default {
         
     },
     computed:{
+        
+        mostrar_descargas_months(){
+            this.descargas_year_month.forEach(element =>{
+                if (this.year_select==element.year) {
+                    this.descargas_mes=element
+                    
+                }
+            })
+            return true
+        },
+        
         descargas:function(){ 
-            const path = 'http://160.153.253.91:3200/downloads';
+            const path = 'http://160.153.253.91:3200/information';
             axios.get(path).then((respuesta) => {
-                this.descargas_year_month=[]
-                respuesta.data.info.forEach((element,index) => {
-                    let year=element.datenow.charAt(0)+element.datenow.charAt(1)+element.datenow.charAt(2)+element.datenow.charAt(3)
-                    let month= element.datenow.charAt(5)+element.datenow.charAt(6)
-                    let day=element.datenow.charAt(8)+element.datenow.charAt(9)
-                    if (this.search_year(year,month)==false) {
+                this.users=respuesta.data.users;
+                this.descargas_year_month=[];
+                respuesta.data.infoDownloads.forEach((element,index) => {
+                    let year=element.datenow.charAt(0)+element.datenow.charAt(1)+element.datenow.charAt(2)+element.datenow.charAt(3);
+                    let month= element.datenow.charAt(5)+element.datenow.charAt(6);
+                    let day=element.datenow.charAt(8)+element.datenow.charAt(9);
+                    if (this.search_year(year,month)==false) { 
+                        this.descargas_year_month.push({
+                            year:year, 
+                            enero:0,
+                            febrero:0,
+                            marzo:0,
+                            abril:0,
+                            mayo:0,
+                            junio:0,
+                            julio:0,
+                            agosto:0,
+                            septiembre:0,
+                            octubre:0,
+                            noviembre:0,
+                            diciembre:0
+                        })
                         switch (parseInt(month)) {
-                                case 1:
-                                    this.descargas_year_month.push({year:year, enero:1})
+                            case 1:
+                                this.descargas_year_month[this.descargas_year_month.length-1].enero+=1
+                                break;
+                            case 2:
+                                this.descargas_year_month[this.descargas_year_month.length-1].febrero+=1
+                                break;
+                            case 3:
+                                this.descargas_year_month[this.descargas_year_month.length-1].marzo+=1
+                                break;
+                            case 4:
+                                this.descargas_year_month[this.descargas_year_month.length-1].abril+=1
+                                break;
+                            case 5:
+                                this.descargas_year_month[this.descargas_year_month.length-1].mayo+=1 
+                                break;
+                            case 6:
+                                this.descargas_year_month[this.descargas_year_month.length-1].junio+=1    
                                     break;
-                                case 2:
-                                    this.descargas_year_month.push({year:year, febrero:1})
+                            case 7:
+                                this.descargas_year_month[this.descargas_year_month.length-1].julio+=1    
                                     break;
-                                case 3:
-                                    this.descargas_year_month.push({year:year, marzo:1})
+                            case 8:
+                                this.descargas_year_month[this.descargas_year_month.length-1].agosto+=1    
                                     break;
-                                case 4:
-                                    this.descargas_year_month.push({year:year, abril:1})
+                            case 9:
+                                this.descargas_year_month[this.descargas_year_month.length-1].septiembre+=1    
                                     break;
-                                case 5:
-                                    this.descargas_year_month.push({year:year, mayo:1})  
-                                        break;
-                                case 6:
-                                    this.descargas_year_month.push({year:year, junio:1})   
-                                        break;
-                                case 7:
-                                    this.descargas_year_month.push({year:year, julio:1})    
-                                        break;
-                                case 8:
-                                    this.descargas_year_month.push({year:year, agosto:1})    
-                                        break;
-                                case 9:
-                                    this.descargas_year_month.push({year:year, septiembre:1})    
-                                        break;
-                                case 10:
-                                    this.descargas_year_month.push({year:year, octubre:1})    
-                                        break;
-                                case 11:
-                                    this.descargas_year_month.push({year:year, noviembre:1})    
-                                        break;
-                                case 12:
-                                    this.descargas_year_month.push({year:year, diciembre:1})     
-                                        break;                               
-                                default:
+                            case 10:
+                                this.descargas_year_month[this.descargas_year_month.length-1].octubre+=1    
                                     break;
+                            case 11:
+                                this.descargas_year_month[this.descargas_year_month.length-1].noviembre+=1    
+                                    break;
+                            case 12:
+                                this.descargas_year_month[this.descargas_year_month.length-1].diciembre+=1
+                                break;                             
+                            default:
+                                break;
                         }   
                     }
                 });
-                console.log(this.descargas_year_month[0],this.descargas_year_month[0]['mayo'])
                 this.total_descargas=parseInt(respuesta.data.downloads)
+                this.llenar_years()
             })
             .catch((error) => {
                 console.log(error)
@@ -335,7 +459,7 @@ export default {
         }
     },
     created () {
-        
+       this.mostrar_modulos_years();
     }
 }
 
@@ -364,6 +488,7 @@ export default {
 }
 .contain{
     margin:0rem 5rem;
+    padding-bottom: 2rem !important;
 }
 .contain_dashboard{
     margin-top: 2rem;
@@ -391,7 +516,14 @@ export default {
 }
 .icon_calendario{
     height: 1.2rem;
+    margin-top:6px !important;
 }
-
+.autocomplete{
+    margin-top:0;
+    padding-top:0;
+}
+.rango_modulo_btn{
+    margin:0px  !important;
+}
 
 </style>
