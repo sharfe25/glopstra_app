@@ -22,11 +22,11 @@
                     </thead>
                     <tbody>
                         <tr
-                            
+                            v-for="experiencia in experiencias" :key="experiencia._id"
                         >
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="text-center">{{experiencia.type}}</td>
+                        <td class="text-center"> <img :src="experiencia.face==='BUENA'?exp_g:experiencia.face==='REGULAR'?exp_r:exp_b" height="30" > </td>
+                        <td class="text-center">{{experiencia.exp}}</td>
                         </tr>
                     </tbody>
                     </template>
@@ -48,24 +48,34 @@ export default {
 
     },
     data:()=>({
-        info_denuncias:'',
-        
+        info_experiences:[],
+        exp_g:require('../assets/experiences/bien.png'),
+        exp_r:require('../assets/experiences/regular.png'),
+        exp_b:require('../assets/experiences/mal.png'),
     }),
     methods:{
         
         
     },
     computed:{
-        denuncias:function(){ 
-            const path = 'http://160.153.253.91:3200/complaint';
-            axios.get(path).then((respuesta) => {
-                console.log(respuesta)
-                this.info_denuncias=respuesta
+        experiencias:function(){ 
+            const email= {email:localStorage.getItem('email')};
+            let config = {
+                headers: {
+                    auth:localStorage.getItem('token')
+                }
+            }
+            const path = 'http://160.153.253.91:3200/searchexpe';
+            axios.post(path, email, config).then((result) => {
+                if (typeof result.data.resp != 'string'){
+                    this.info_experiences=result.data.resp;
+                }
+                
             })
             .catch((error) => {
-                console.log(error)
-            })
-            return this.info_denuncias
+                console.log(error);
+            });
+            return this.info_experiences
         }
     },
     created () {

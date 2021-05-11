@@ -35,11 +35,11 @@
                             {{descargas}}
                         </v-card-text>
 
-                        <v-list-item-content class="py-1">
+                        <!-- <v-list-item-content class="py-1">
                             <v-list-item-title class="my-0 overline text-center">
                                 Totales de Glopstra
                             </v-list-item-title>
-                        </v-list-item-content>
+                        </v-list-item-content> -->
                         </v-card>
                     </v-col>
                     <v-col
@@ -74,11 +74,11 @@
                             {{users}}
                         </v-card-text>
 
-                        <v-list-item-content class="py-1">
+                        <!-- <v-list-item-content class="py-1">
                             <v-list-item-title class="my-0 overline text-center">
                                 En Glopstra
                             </v-list-item-title>
-                        </v-list-item-content>
+                        </v-list-item-content> -->
                         </v-card>
                     </v-col>
                     <v-col
@@ -109,15 +109,14 @@
                         </v-row>
                         
                         <v-card-text class="headline font-weight-bold text-center mt-4">
-                            1212121212
+                            {{family}}
                         </v-card-text>
 
-                        <v-list-item-content>
-                            <v-list-item-title>
-                                <img class="icon_arrow icon mr-1" src="../assets/dashboard/up.png">
-                                484
+                        <!-- <v-list-item-content class="py-1">
+                            <v-list-item-title class="my-0 overline text-center">
+                                Unidos en  Glopstra
                             </v-list-item-title>
-                        </v-list-item-content>
+                        </v-list-item-content> -->
                         </v-card>
                     </v-col>
                 </v-row>
@@ -138,7 +137,7 @@
                             </div>
                         
                         <v-card-text class="headline font-weight-bold white--text text-center mt-0 mb-3">
-                            {{descargas}}
+                            {{companies}}
                         </v-card-text>
 
                         
@@ -162,7 +161,7 @@
                         
                         
                         <v-card-text class="headline font-weight-bold  text-center mt-0 mb-3">
-                            {{users}}
+                            {{branchs}}
                         </v-card-text>
 
                         </v-card>
@@ -183,11 +182,32 @@
                         </div>
                         
                         <v-card-text class="headline font-weight-bold text-center mt-0 mb-3">
-                            1212121212
+                            {{employees}}
                         </v-card-text>
 
                         </v-card>
                     </v-col>
+                    <!-- <v-col
+                        cols="12"
+                        sm="12"
+                        md="3"
+                    >
+                        <v-card
+                        class="card_datos  pl-4 pa-2"
+                        outlined
+                        tile
+                        elevation="4"
+                        >
+                        <div class="overline mb-0">
+                            Ciudadanos
+                        </div>
+                        
+                        <v-card-text class="headline font-weight-bold text-center mt-0 mb-3">
+                            {{citizens}}
+                        </v-card-text>
+
+                        </v-card>
+                    </v-col> -->
                 </v-row>
                 <v-row justify="space-around">
                     <v-col 
@@ -264,7 +284,8 @@
                             elevation="2"
                             class=""
                         >
-                            
+                        <ChartDoughnutBase :chart-data="chartData" />
+                           
                         </v-card>
                     </v-col>
                 </v-row>
@@ -276,14 +297,20 @@
 <script>
 // @ is an alias to /src
 import axios from "axios";
-
+import ChartDoughnutBase from "@/components/ChartDoughnutBase";
 
 export default {
     name: 'Home',
     components: {
-
+        ChartDoughnutBase
     },
     data:()=>({
+        chartData: null,
+        family:0,
+        companies:0,
+        branchs:0,
+        citizens:0,
+        employees:0,
         descargas_mes:{},
         users:0,
         rango_modulo:'Julio - Diciembre',
@@ -294,8 +321,27 @@ export default {
         years:[],
         total_descargas:0,
         meses: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-        descargas_year_month:[]
+        descargas_year_month:[],
+        height:300,
+        datasets: [
+        {
+          data: [85, 15],
+          backgroundColor: ['#B71C1C', '#424242'],
+          hoverBackgroundColor: ['#FF5252', '#BDBDBD'],
+        }
+
+      ],
+
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: [
+        'Red',
+        'Yellow',
+        'Blue'
+    ]
+    
     }),
+    
     methods:{
         mostrar_modulos_years(){
  
@@ -367,11 +413,7 @@ export default {
                 } 
             }
             return true
-        }
-        
-    },
-    computed:{
-        
+        },
         mostrar_descargas_months(){
             this.descargas_year_month.forEach(element =>{
                 if (this.year_select==element.year) {
@@ -379,13 +421,31 @@ export default {
                     
                 }
             })
-            return true
+            
         },
-        
+        fillData() {
+            this.chartData = {
+                labels: ["Foo", "Bar", "Baz"],
+                datasets: [
+                {
+                    backgroundColor: ["#f36e60", "#ffdb3b", "#185190"],
+                    hoverBackgroundColor: ["#fbd2cd", "#fef5c9", "#d1e3f7"],
+                    data: [10, 20, 40]
+                }
+                ]
+        }}
+      
+    },
+    computed:{
         descargas:function(){ 
             const path = 'http://160.153.253.91:3200/information';
             axios.get(path).then((respuesta) => {
+                this.family=respuesta.data.family;
+                this.companies=respuesta.data.company;
                 this.users=respuesta.data.users;
+                this.employees=respuesta.data.employees;
+                this.branchs=respuesta.data.branch;
+                this.citizens=respuesta.data.citizen;
                 this.descargas_year_month=[];
                 respuesta.data.infoDownloads.forEach((element,index) => {
                     let year=element.datenow.charAt(0)+element.datenow.charAt(1)+element.datenow.charAt(2)+element.datenow.charAt(3);
@@ -451,12 +511,22 @@ export default {
                 });
                 this.total_descargas=parseInt(respuesta.data.downloads)
                 this.llenar_years()
+                this.mostrar_descargas_months()
             })
             .catch((error) => {
                 console.log(error)
             })
             return this.total_descargas
+        },
+        myStyles () {
+            return {
+                height: `${this.height}px`,
+                position: 'relative'
+            }
         }
+    },
+    mounted () {
+         this.fillData();
     },
     created () {
        this.mostrar_modulos_years();

@@ -52,7 +52,6 @@
                 </v-btn>
             </v-form>
             <p id="registro_linea">¿No tienes una cuenta? <a id="registro_link"  @click="registrar" >Registrate</a></p>
-            <p id="qr">Activar mediante QR</p>
             </v-card>
         </div>
     </v-app>
@@ -95,19 +94,17 @@ export default {
         login(){
             const path = 'http://160.153.253.91:3200/login';
             axios.post(path, this.user).then((result) => {
-
-                localStorage.setItem('token', result.data.tokenbd)
-                if(result.data.error){
-                    this.alert=true
-                }
+                console.log(result)
                 if(result.data.usuario==='conectado'){
-                    this.alert=false
-                    localStorage.setItem('email',result.data.email)
+                    localStorage.setItem('token', result.data.tokenbd);
+                    this.alert=false;
+                    localStorage.setItem('email',result.data.email);
                     this.$router.push('/Account');
                 }
             })
-            .catch((error) => {
-                console.log(error);
+            .catch((e) => { 
+                console.log(e);
+                this.alert=true;
             });
         }
     }
@@ -221,17 +218,14 @@ export default {
     p#registro_linea{
         font-size:.8rem;
         font-family: 'gotham';
+        margin: 0 0 5vh !important;
     }
     p#registro_linea a#registro_link{
         text-decoration: none !important;
         color:#F15831;
         
     }
-    #qr{
-        margin: 8vh 0 5vh !important;
-        font-size:.8rem;
-        font-family: 'gotham';
-    }
+   
     @media (max-width: 768px) {
     .main{
         padding: 0px; 

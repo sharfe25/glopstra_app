@@ -82,6 +82,7 @@ export default {
                         d.email='Anonimo'
                     }
                 });
+                
                 this.info_denuncias=respuesta.data
             })
             .catch((error) => {

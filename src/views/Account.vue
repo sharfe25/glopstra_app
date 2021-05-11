@@ -48,7 +48,7 @@
                     <v-list dense >
                         <v-list-item  @click="reports" class="border" :class="opcion_click_report">
                             <v-list-item-content>
-                                <v-list-item-title class="opcion_menu">Reportes</v-list-item-title>
+                                <v-list-item-title class="opcion_menu">Denuncias</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
@@ -137,7 +137,7 @@ export default {
     Experiencias,
   },
   data:()=>({
-        name:'Sharon',
+        name:'',
         opcion_click_home:'',
         opcion_click_report:'',
         opcion_click_process:'',
@@ -220,7 +220,8 @@ export default {
                 console.log(error);
             });
         
-        }
+        },
+
         
     },
     mounted(){
