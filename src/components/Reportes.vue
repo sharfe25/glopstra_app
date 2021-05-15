@@ -8,29 +8,29 @@
                     <template v-slot:default>
                     <thead>
                         <tr>
-                        <th class="text-left">
+                        <th class="text-center">
                             Nombre
                         </th>
-                        <th class="text-left">
+                        <th class="text-center">
                             Email
                         </th>
-                        <th class="text-left">
+                        <th class="text-center">
                             Tipo de denuncia
                         </th>
-                        <th class="text-left">
+                        <th class="text-center">
                             Dirección
                         </th>
-                        <th class="text-left">
+                        <th class="text-center">
                             Pais
                         </th>
                         
-                        <th class="text-left">
+                        <th class="text-center">
                             Estado
                         </th>
-                        <th class="text-left">
+                        <th class="text-center">
                             ciudad
                         </th>
-                        <th class="text-left">
+                        <th class="text-center">
                             Comentarios
                         </th>
                         </tr>
@@ -39,14 +39,14 @@
                         <tr
                             v-for="denuncia in denuncias" :key="denuncia._id"
                         >
-                        <td>{{denuncia.name}} {{denuncia.lastName}}</td>
-                        <td>{{denuncia.email}}</td>
-                        <td>{{denuncia.typeOfComplaint}}</td>
-                        <td>{{denuncia.direction}}</td>
-                        <td>{{denuncia.country}}</td>
-                        <td>{{denuncia.state}}</td>
-                        <td>{{denuncia.city}}</td>
-                        <td>{{denuncia.coments}}</td>
+                        <td class="text-center">{{denuncia.name}} {{denuncia.lastName}}</td>
+                        <td class="text-center">{{denuncia.email}}</td>
+                        <td class="text-center">{{denuncia.typeOfComplaint}}</td>
+                        <td class="text-center">{{denuncia.direction}}</td>
+                        <td class="text-center">{{denuncia.country}}</td>
+                        <td class="text-center">{{denuncia.state}}</td>
+                        <td class="text-center">{{denuncia.city}}</td>
+                        <td class="text-center">{{denuncia.coments}}</td>
                         </tr>
                     </tbody>
                     </template>
@@ -117,6 +117,7 @@ export default {
 }
 .main{
     height: 100%;
+    padding-bottom:1rem;
 }
 .contain h1{
     color:#686868;
@@ -149,6 +150,11 @@ export default {
 }
 .icon{
     height: .7rem;
+}
+@media (max-width: 768px) {
+    .contain{
+        margin:0rem 1rem;
+    }
 }
 
 </style>

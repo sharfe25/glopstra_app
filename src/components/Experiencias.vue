@@ -133,5 +133,10 @@ export default {
 .icon{
     height: .7rem;
 }
+@media (max-width: 768px) {
+    .contain{
+        margin:0rem 1rem;
+    }
+}
 
 </style>

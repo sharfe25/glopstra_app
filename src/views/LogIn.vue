@@ -20,7 +20,7 @@
             class="mx-5"
             transition="scale-transition"
             >
-                Contraseña incorrecta
+                {{message_alert}}
             </v-alert>
             <v-form
                 ref="form"
@@ -44,7 +44,19 @@
                 color="rgb(65, 65, 65)"
                 ></v-text-field>
                 <div class="container-2">
-                    <p>Mantener conectado</p>
+                    <v-checkbox
+                        class="mx-0"
+                        v-model="conect"
+                        color="orange darken-3"
+                    >
+                    <template v-slot:label>
+                        <div>
+                            <p class="p">
+                                Mantener conectado
+                            </p>
+                        </div>
+                    </template>
+                    </v-checkbox><p></p>
                     <a @click="forget_password">¿Olvidaste la contraseña?</a>
                 </div>
                 <v-btn class="mr-4 submit-button" @click="login(); validate()" >
@@ -54,6 +66,37 @@
             <p id="registro_linea">¿No tienes una cuenta? <a id="registro_link"  @click="registrar" >Registrate</a></p>
             </v-card>
         </div>
+        <v-dialog
+        v-model="ciudadano"
+        max-width="390"
+        >
+        <v-card class="card_dialog pt-6">
+            <v-img
+                class="mt-2"
+                contain
+                src="../assets/alertas.png"
+                height="100"
+            ></v-img>
+            <v-card-title class="text_dialog headline">
+               ¡Ups! Ha ocurrido un error
+            </v-card-title>
+            <v-card-text>
+                Usa nuestra App Glopstra <br>
+                Esta pagina es de uso exclusivo para usuarios de tipo gobierno o empresa.
+            </v-card-text>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="#cd3330"
+                class="text_dialog"
+                text
+                @click="ciudadano = false;"
+            >
+                Ok
+            </v-btn>
+            </v-card-actions>
+        </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -67,12 +110,14 @@ export default {
     
   },
   data:()=>({
+        ciudadano:false, 
+        message_alert:'',
+        conect:false,
         alert:false,
         user:{
             email:'',
             password:''
         },
-        
         emailRules: [
             v => !!v || 'El email es requerido',
             v => /.+@.+\..+/.test(v) || 'Ingrese un email valido',
@@ -92,20 +137,49 @@ export default {
             this.$router.push('/Recuperar_contrasena');
         },
         login(){
+            let m_alert='';
             const path = 'http://160.153.253.91:3200/login';
             axios.post(path, this.user).then((result) => {
-                console.log(result)
-                if(result.data.usuario==='conectado'){
-                    localStorage.setItem('token', result.data.tokenbd);
-                    this.alert=false;
-                    localStorage.setItem('email',result.data.email);
-                    this.$router.push('/Account');
+                if (result.data.Tusuario==='ciudadano') {
+                    this.ciudadano=true;
+                    this.user.email='';
+                    this.user.password='';
+                    this.conect=false;
+                }else{
+                    if(result.data.usuario==='conectado'){
+                        localStorage.setItem('token', result.data.tokenbd);
+                        this.alert=false;
+                        localStorage.setItem('email',result.data.email);
+                        if (this.conect==true) {
+                            localStorage.setItem('conect','true');
+                        }else{
+                            localStorage.setItem('conect','false');
+                        }
+                        
+                        this.$router.push('/Account');
+                    }
                 }
             })
-            .catch((e) => { 
-                console.log(e);
-                this.alert=true;
+            .catch(function (error) {
+                let err=JSON.parse(error.request.response)
+                
+                if (err.usuario==='no conectado' && err.error==='contraseña incorrecta'){
+                    m_alert='Contraseña incorrecta'
+                }else if(err.usuario==='Usuario no registrado'){console.log(err.usuario==='Usuario no registrado')
+                    m_alert='Usuario no registrado'
+                }else{
+                    m_alert='Ha ocurrido un error, por favor intentarlo más tarde'
+                }
+            })
+            .then(() =>{
+              if (m_alert!='') {
+                    this.message_alert=m_alert
+                    this.alert=true;
+                }  
             });
+            
+            
+            
         }
     }
 }
@@ -189,13 +263,16 @@ export default {
         box-shadow: 0px 0px 5px black;
     }
     .container-2{
-        margin-top:1rem;
+        margin-top:.2rem;
         font-family: 'gotham';
         display: flex;
         align-items:center;
         justify-content:center;
-        margin-bottom: 2vw;
-        font-size:.8rem;
+        margin-bottom: 0.5vw;
+        font-size:.8rem !important;
+    }
+    .container-2 .p{
+        font-size:.8rem !important;
     }
     .container-2 p, .container-2 a{
         

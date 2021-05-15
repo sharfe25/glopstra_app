@@ -149,12 +149,12 @@ export default {
         password_dos:'',
         user:{
             email:'',
-            password:'',
-            phone:'',
-            Tusuario:'',
             country:'',
             state:'',
             city:'',
+            Tusuario:'',
+            phone:'',
+            password:'',
         },
         paises_name:[],
         ciudades_name:[],
@@ -196,57 +196,64 @@ export default {
     methods:{
 
         registrar(){
-            let prueba={}
-            if(this.user.password==this.password_dos && this.user.T_usuario!=''){
+            let newUser={}
+            let usuario_exist=''
+            if(this.user.password===this.password_dos && this.user.T_usuario!=''){
                 
-                prueba={
+                newUser={
                     email:`${this.user.email}`,
-                    password:`${this.user.password}`,
-                    phone:`${this.user.phone}`,
-                    Tusuario:`${this.user.T_usuario}`,
                     country:`${this.user.country}`,
                     state:`${this.user.state}`,
                     city:`${this.user.city}`,
+                    Tusuario:`${this.user.Tusuario}`,
+                    phone:parseInt(this.user.phone),
+                    password:`${this.user.password}`,
                 }
+                console.log(newUser)
                 const path = 'http://160.153.253.91:3200/singup';
-                axios.post(path, prueba).then((result) => {
-                    if(result.data.usuario=='Usuario ya existente'){
-                        this.message_alert=result.data.usuario;
-                        this.alert=true;
-                        this.loadingButton=true;
-                    }else{
-                        localStorage.setItem('email',this.user.email)
-                        localStorage.setItem('code','registro')
-                        this.$router.push('/Codigo');
-                        this.alert=false;
-                        this.loadingButton=false;
-                        this.user.email='';
-                        this.user.password='';
-                        this.user.phone='';
-                        this.user.T_usuario='';
-                        this.user.country='';
-                        this.user.state='';
-                        this.user.city='';
-                    }
+                axios.post(path, newUser).then((result) => {
+                    localStorage.setItem('email',this.user.email)
+                    localStorage.setItem('code','registro')
+                    this.$router.push('/Codigo');
+                    this.alert=false;
+                    this.loadingButton=false;
+                    this.user.email='';
+                    this.user.password='';
+                    this.user.phone='';
+                    this.user.T_usuario='';
+                    this.user.country='';
+                    this.user.state='';
+                    this.user.city='';
+                    
                 })
                 .catch((error) => {
-                    console.log(error);
+                    let err=JSON.parse(error.request.response)
+                    if (err.usuario==='Usuario ya existente') {
+                        usuario_exist='Usuario ya existente'
+                    }
+                    
+                })
+                .then(()=> {
+                    if (usuario_exist!='') {
+                        this.message_alert=usuario_exist;
+                        this.alert=true;
+                    } else{
+                        this.alert=false;
+                    }
                 });
                 
             }
             if(this.user.password!=this.password_dos){
                 this.message_alert='Las contraseñas no coinciden';
                 this.alert=true;
-            }else{
-                this.alert=false;
+                
             }
-            if(this.user.T_usuario==''){
+            else if(this.user.T_usuario==''){
                 this.message_alert='El tipo de usuario es requerido'
                 this.alert=true;
             }else{
                 this.alert=false;
             }
-            
         },
         countries(){
             const path = 'http://160.153.253.91:3200/contries';
@@ -274,7 +281,6 @@ export default {
                     country: pais[0].id
                 }
             }
-            console.log(pais)
             const path = 'http://160.153.253.91:3200/states';
             axios.post(path, pais).then((result) => {
                 this.estados=result.data

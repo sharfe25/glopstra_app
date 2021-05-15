@@ -217,9 +217,9 @@
                     class="">
                         <v-card
                             elevation="2"
-                            class="pa-3"
+                            class="card_graf pa-3"
                         >
-                        <v-row no-gutters>
+                        <v-row no-gutters class="mb-7">
                             <v-col
                                 cols="12"
                                 sm="4"
@@ -232,7 +232,6 @@
                                 sm="8"
                                 class="d-flex col"
                             >
-                                
                                 <v-autocomplete rounded class="autocomplete"  v-model="year_select" @change="mostrar_descargas_months" :items="years"></v-autocomplete>
                                 <v-btn
                                 class="ma-2 rango_modulo_btn"
@@ -242,7 +241,6 @@
                                 >
                                     {{rango_modulo}}
                                 </v-btn>
-                                <img class="icon_calendario mt-1 mr-3 icon" src="../assets/dashboard/calendario.png">
                             </v-col>
                         </v-row>
                         
@@ -251,21 +249,24 @@
                         :key="index">
                         <v-row  >
                             <v-col
-                                cols="12"
-                                sm="3"
+                                cols="6"
+                                md="3"
+                                sm="2"
                                 class="overline"
                             >
                                 {{meses[i]}}
                             </v-col>
                             <v-col
-                                sm="9"
+                                cols="6"
+                                md="9"
+                                sm="10"
                                 class="d-flex"
                             >
                                <v-progress-linear
                                 color="rgba(240,191,55,1)"
                                 height="25"
                                 :value="descargas_year_month.length>0?descargas_mes[meses[i].toLowerCase()]:0"
-                                class="mb-3"
+                                class="mb-md-3"
                                 >
                                 <template>
                                     <strong >{{descargas_year_month.length>0?descargas_mes[meses[i].toLowerCase()]:0}}</strong>
@@ -279,13 +280,39 @@
                     <v-col 
                     cols="12"
                     sm="12"
-                    md="3">
+                    md="4">
                         <v-card
-                            elevation="2"
-                            class=""
+                        elevation="0"
+                        class="card_char_pie"
                         >
-                        <ChartDoughnutBase :chart-data="chartData" />
-                           
+                        <v-list-item-title class="overline text-center">
+                            Clasificación de usuarios
+                        </v-list-item-title>
+                            <GChart
+                                class="pieChart"
+                                type="PieChart"
+                                :data="chartData"
+                                :options="chartOptions"
+                                :events="sliceSelected"
+                                ref="gChart"
+                            />
+                            <v-container class="py-0">
+                                <v-row
+                                    align="center"
+                                    justify="center"
+                                >
+                                    <v-col
+                                    v-for="selection in selections"
+                                    :key="selection"
+                                    class="shrink"
+                                    
+                                    >
+                                    <v-chip text-color="white" class="body-2" :color="color_select">
+                                        {{ selection }}
+                                    </v-chip>
+                                    </v-col>
+                                </v-row>
+                                </v-container>
                         </v-card>
                     </v-col>
                 </v-row>
@@ -297,15 +324,36 @@
 <script>
 // @ is an alias to /src
 import axios from "axios";
-import ChartDoughnutBase from "@/components/ChartDoughnutBase";
+import { GChart } from 'vue-google-charts'
 
 export default {
     name: 'Home',
     components: {
-        ChartDoughnutBase
+        GChart
     },
     data:()=>({
-        chartData: null,
+        color_select:'',
+        selections:[],
+        chartData: [],
+        chartOptions: {
+            legend: 'none',
+            slices: {
+                0: { color: 'rgb(126, 126, 126)' ,offset: 0},
+                1: { color: 'rgb(255, 192, 0)' ,offset: 0},
+                2: { color: 'rgb(94, 55, 146)' ,offset: 0},
+                3: { color: 'rgb(133, 1, 63)' ,offset: 0},
+                4: { color: 'rgb(220, 25, 44)' ,offset: 0},
+                5: { color: 'rgb(255, 69, 28)' ,offset: 0},
+                6: { color: 'rgb(134, 191, 0)' ,offset: 0},   
+            },
+            pieSliceText: 'percentage',
+            pieSliceTextStyle:{color: 'white', fontName: 'Roboto', fontSize: 18},
+            backgroundColor:'transparent',
+            chartArea:{width:'80%',height:'75%'},
+            height:300,  
+            tooltip:{trigger:'focus'}
+        },
+        chartEvents: {},
         family:0,
         companies:0,
         branchs:0,
@@ -323,22 +371,6 @@ export default {
         meses: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
         descargas_year_month:[],
         height:300,
-        datasets: [
-        {
-          data: [85, 15],
-          backgroundColor: ['#B71C1C', '#424242'],
-          hoverBackgroundColor: ['#FF5252', '#BDBDBD'],
-        }
-
-      ],
-
-
-    // These labels appear in the legend and in the tooltips when hovering different arcs
-    labels: [
-        'Red',
-        'Yellow',
-        'Blue'
-    ]
     
     }),
     
@@ -423,21 +455,33 @@ export default {
             })
             
         },
-        fillData() {
-            this.chartData = {
-                labels: ["Foo", "Bar", "Baz"],
-                datasets: [
-                {
-                    backgroundColor: ["#f36e60", "#ffdb3b", "#185190"],
-                    hoverBackgroundColor: ["#fbd2cd", "#fef5c9", "#d1e3f7"],
-                    data: [10, 20, 40]
-                }
-                ]
-        }}
+        
       
     },
     computed:{
+        sliceSelected(){
+            this.chartEvents={
+                select: () => {           
+                    const pieChart = this.$refs.gChart.chartObject;
+                    const selection = pieChart.getSelection(); 
+                    
+                    if (selection.length>0) {
+                        this.selections=[]
+                        const slice= selection[0].row;
+                        for (const slice in this.chartOptions.slices) {
+                            this.chartOptions.slices[slice].offset=0;
+                        }
+                        this.chartOptions.slices[slice].offset=0.2;
+                        this.color_select=this.chartOptions.slices[slice].color;
+                        this.selections.push(`Tipo: ${this.chartData[slice+1][0]}`)
+                        this.selections.push(`Total: ${this.chartData[slice+1][1]}`)
+                    }
+                }
+            }
+            return this.chartEvents;
+        },
         descargas:function(){ 
+            this.chartData=[];
             const path = 'http://160.153.253.91:3200/information';
             axios.get(path).then((respuesta) => {
                 this.family=respuesta.data.family;
@@ -446,6 +490,14 @@ export default {
                 this.employees=respuesta.data.employees;
                 this.branchs=respuesta.data.branch;
                 this.citizens=respuesta.data.citizen;
+                this.chartData.push(['Clasificacion', 'Cantidad']);
+                this.chartData.push(['Nunca Covid', respuesta.data.prevcov[0].c1]);
+                this.chartData.push(['Desconoce Covid', respuesta.data.prevcov[0].c2]);
+                this.chartData.push(['Tuvo Covid', respuesta.data.prevcov[0].c3]);
+                this.chartData.push(['Sintomas Covid', respuesta.data.prevcov[0].c4]);
+                this.chartData.push(['Positivo Covid', respuesta.data.prevcov[0].c5]);
+                this.chartData.push(['Contacto Covid', respuesta.data.prevcov[0].c6]);
+                this.chartData.push(['Vacunado Covid', respuesta.data.prevcov[0].c7]);
                 this.descargas_year_month=[];
                 respuesta.data.infoDownloads.forEach((element,index) => {
                     let year=element.datenow.charAt(0)+element.datenow.charAt(1)+element.datenow.charAt(2)+element.datenow.charAt(3);
@@ -518,15 +570,10 @@ export default {
             })
             return this.total_descargas
         },
-        myStyles () {
-            return {
-                height: `${this.height}px`,
-                position: 'relative'
-            }
-        }
+        
     },
     mounted () {
-         this.fillData();
+
     },
     created () {
        this.mostrar_modulos_years();
@@ -594,6 +641,27 @@ export default {
 }
 .rango_modulo_btn{
     margin:0px  !important;
+    
+}
+.headline{
+    font-size:2.5rem !important;
+    margin-bottom: 1rem !important;
+}
+.card_char_pie{
+    background-color:transparent;
+}
+@media (max-width: 768px) {
+    .contain{
+        margin:0rem 2.5rem;
+        padding-bottom: 2rem !important;
+    }
+    .card_datos{
+        margin-bottom:1rem !important;
+    }
+    .rango_modulo_btn{
+        font-size: .7rem !important;
+    }
+
 }
 
 </style>
