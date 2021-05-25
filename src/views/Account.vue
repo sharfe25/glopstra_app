@@ -73,6 +73,16 @@
 
             <v-divider class="barra"></v-divider>
             
+            <v-list dense >
+                        <v-list-item  @click="contact" class="border" :class="opcion_click_contact">
+                            <v-list-item-content>
+                                <v-list-item-title class="opcion_menu">PQRS</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        
+                    </v-list>
+
+                    <v-divider class="barra"></v-divider>
             
             <v-list dense >
                 <v-list-item  @click="config" class="border"  :class="opcion_click_config">

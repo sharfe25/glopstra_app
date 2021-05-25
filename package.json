@@ -12,6 +12,7 @@
     "chart.js": "^3.0.0",
     "core-js": "^3.6.5",
     "hchs-vue-charts": "^1.2.8",
+    "mdi-vue": "^3.0.7",
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.1",
     "vue-chartkick": "^1.1.0",
@@ -28,7 +29,7 @@
     "@vue/cli-service": "~4.5.0",
     "sass": "^1.32.0",
     "sass-loader": "^10.0.0",
-    "vue-cli-plugin-vuetify": "^2.3.1",
+    "vue-cli-plugin-vuetify": "^2.4.0",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.7.0"
   },

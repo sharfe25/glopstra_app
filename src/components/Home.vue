@@ -209,7 +209,7 @@
                         </v-card>
                     </v-col> -->
                 </v-row>
-                <v-row justify="space-around">
+                <v-row justify="space-around" class="mb-3">
                     <v-col 
                     cols="12"
                     sm="12"
@@ -339,12 +339,12 @@ export default {
             legend: 'none',
             slices: {
                 0: { color: 'rgb(126, 126, 126)' ,offset: 0},
-                1: { color: 'rgb(255, 192, 0)' ,offset: 0},
+                1: { color: '#F4CA41' ,offset: 0},
                 2: { color: 'rgb(94, 55, 146)' ,offset: 0},
                 3: { color: 'rgb(133, 1, 63)' ,offset: 0},
                 4: { color: 'rgb(220, 25, 44)' ,offset: 0},
-                5: { color: 'rgb(255, 69, 28)' ,offset: 0},
-                6: { color: 'rgb(134, 191, 0)' ,offset: 0},   
+                5: { color: '#F9592F' ,offset: 0},
+                6: { color: '#E86142' ,offset: 0},   
             },
             pieSliceText: 'percentage',
             pieSliceTextStyle:{color: 'white', fontName: 'Roboto', fontSize: 18},
