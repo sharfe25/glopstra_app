@@ -103,6 +103,7 @@
 <script>
 // @ is an alias to /src
 import axios from "axios";
+import {mapActions,mapState} from 'vuex';
 
 export default {
   name: 'LogIn',
@@ -127,6 +128,7 @@ export default {
         ],
     }),
     methods:{
+
         validate () {
             this.$refs.form.validate()
         },
@@ -140,33 +142,36 @@ export default {
             let m_alert='';
             const path = 'http://160.153.253.91:3200/login';
             axios.post(path, this.user).then((result) => {
-                if (result.data.Tusuario==='ciudadano') {
+                console.log(result)
+                if (result.data.results.Tusuario==='ciudadano') {
                     this.ciudadano=true;
                     this.user.email='';
                     this.user.password='';
                     this.conect=false;
                 }else{
-                    if(result.data.usuario==='conectado'){
-                        localStorage.setItem('token', result.data.tokenbd);
+                    if(result.data.results.usuario==='conectado' && result.data.results.status){
+                        localStorage.setItem('token', result.data.results.tokenbd);
                         this.alert=false;
-                        localStorage.setItem('email',result.data.email);
+                        localStorage.setItem('email',result.data.results.email);
                         if (this.conect==true) {
                             localStorage.setItem('conect','true');
                         }else{
                             localStorage.setItem('conect','false');
                         }
-                        
+
                         this.$router.push('/Account');
+                    }else{
+                        this.$router.push('/Codigo');
                     }
                 }
             })
             .catch(function (error) {
-                let err=JSON.parse(error.request.response)
-                
-                if (err.usuario==='no conectado' && err.error==='contraseña incorrecta'){
+                let err=JSON.parse(error.request.response).error
+                console.log(err)
+                if (err.message==='Contraseña incorrecta'){
                     m_alert='Contraseña incorrecta'
-                }else if(err.usuario==='Usuario no registrado'){console.log(err.usuario==='Usuario no registrado')
-                    m_alert='Usuario no registrado'
+                }else if(err.message==="El usuario no esta registrado en el sistema"){
+                    m_alert="El usuario no esta registrado en el sistema"
                 }else{
                     m_alert='Ha ocurrido un error, por favor intentarlo más tarde'
                 }
@@ -303,7 +308,7 @@ export default {
         
     }
    
-    @media (max-width: 768px) {
+    @media (max-width: 1100px) {
     .main{
         padding: 0px; 
         background-image: url('../assets/contacto.png');
@@ -324,6 +329,9 @@ export default {
     }
     .formRegistrar{
         width: 82%;
+    }
+    .form{
+        width: 78%;
     }
     .container-2{
         margin: 5% 0 9%;

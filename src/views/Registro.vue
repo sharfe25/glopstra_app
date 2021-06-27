@@ -28,30 +28,51 @@
             >
                 <v-text-field
                 class='input_p'
+                v-model="user.name"
+                :rules="campoURules"
+                label="Nombre"
+                required
+                color="rgb(65, 65, 65)"
+                ></v-text-field>
+
+                <v-text-field
+                v-if="user.Tusuario==='ciudadano'"
+                class='input_p'
+                v-model="user.lastname"
+                :rules="campoURules"
+                label="Apellidos"
+                required
+                color="rgb(65, 65, 65)"
+                ></v-text-field>
+
+                <v-text-field
+                v-if="user.Tusuario==='ciudadano'"
+                v-model="user.id"
+                :rules="campoURules"
+                label="ID"
+                required
+                type="number"
+                
+                color="rgb(65, 65, 65)"
+                ></v-text-field>
+
+                <v-text-field
+                v-if="user.Tusuario==='empresa'"
+                v-model="user.nit"
+                :rules="campoURules"
+                label="NIT"
+                required
+                type="number"
+                
+                color="rgb(65, 65, 65)"
+                ></v-text-field>
+
+                <v-text-field
+                class='input_p'
                 v-model="user.email"
                 :rules="emailRules"
                 label="E-mail"
                 required
-                color="rgb(65, 65, 65)"
-                ></v-text-field>
-
-                <v-text-field
-                v-model="user.password"
-                type="password"
-                :rules="passwordRules"
-                label="Contraseña"
-                required
-                autocomplete="on"
-                color="rgb(65, 65, 65)"
-                ></v-text-field>
-
-                <v-text-field
-                v-model="password_dos"
-                type="password"
-                :rules="passwordRules"
-                label="Repita la Contraseña"
-                required
-                autocomplete="on"
                 color="rgb(65, 65, 65)"
                 ></v-text-field>
 
@@ -93,14 +114,34 @@
                 <v-text-field
                 v-model="user.phone"
                 :rules="telefonoRules"
-                label="Teléfono"
+                label="Teléfono móvil"
                 required
                 type="number"
                 
                 color="rgb(65, 65, 65)"
                 ></v-text-field>
 
-                <div class="container-2">
+                <v-text-field
+                v-model="user.password"
+                type="password"
+                :rules="passwordRules"
+                label="Contraseña"
+                required
+                autocomplete="on"
+                color="rgb(65, 65, 65)"
+                ></v-text-field>
+
+                <v-text-field
+                v-model="password_dos"
+                type="password"
+                :rules="passwordRules"
+                label="Repita la Contraseña"
+                required
+                autocomplete="on"
+                color="rgb(65, 65, 65)"
+                ></v-text-field>
+
+                <!-- <div class="container-2">
                     <p>Tipo de usuario: </p>
                     <v-radio-group
                     v-model="user.Tusuario"
@@ -123,13 +164,34 @@
                             class="ml-7"
                         ></v-radio>
                     </v-radio-group>
-                </div>
+                </div> -->
                 <v-btn class="mr-4 submit-button" :loading="loadingButton" @click="registrar" >
                     Registrarse
                 </v-btn>
             </v-form>
             </v-card>
         </div>
+        <v-dialog
+        v-model="dialog"
+        persistent
+        max-width="450"
+        >
+            <v-card class="card_dialog">
+                <v-card-title class="text-h5 titulo_dialog">
+                Tipo de usuario
+                </v-card-title>
+                <v-card elevation="4" class="card_type d-flex justify-space-between align-center" @click="dialog = false;user.Tusuario='ciudadano'">
+                    <img class="img" src="../assets/register/persona.png" alt="">
+                    Ciudadano
+                </v-card>
+                <v-card elevation="4" class="card_type d-flex justify-space-between align-center" @click="dialog = false;user.Tusuario='empresa' ">
+                    <img class="img" src="../assets/register/empresa.png" alt="">
+                    Empresa
+                </v-card>
+                <v-card-actions>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -143,6 +205,7 @@ export default {
         
     },
     data:()=>({
+        dialog:true,
         message_alert:'',
         loadingButton: false,
         alert:false,
@@ -191,6 +254,10 @@ export default {
         tipoURules: [
             v => !!v || 'El tipo de usuario es requerido',
         ],
+        campoURules: [
+            v => !!v || 'Este campo es requerido',
+        ],
+
         
     }),
     methods:{
@@ -199,8 +266,8 @@ export default {
             let newUser={}
             let usuario_exist=''
             if(this.user.password===this.password_dos && this.user.T_usuario!=''){
-                
                 newUser={
+                    name: `${this.user.name}`,
                     email:`${this.user.email}`,
                     country:`${this.user.country}`,
                     state:`${this.user.state}`,
@@ -209,6 +276,13 @@ export default {
                     phone:parseInt(this.user.phone),
                     password:`${this.user.password}`,
                 }
+                if (this.user.Tusuario==="ciudadano") {
+                    newUser.lastname=this.user.lastname;
+                    newUser.id=parseInt(this.user.id);
+                }else{
+                    newUser.nit=parseInt(this.user.nit);
+                }
+                
                 console.log(newUser)
                 const path = 'http://160.153.253.91:3200/singup';
                 axios.post(path, newUser).then((result) => {
@@ -227,9 +301,10 @@ export default {
                     
                 })
                 .catch((error) => {
+                    console.log(error.request.response)
                     let err=JSON.parse(error.request.response)
-                    if (err.usuario==='Usuario ya existente') {
-                        usuario_exist='Usuario ya existente'
+                    if (err.error.message!='') {
+                        usuario_exist=err.error.message
                     }
                     
                 })
@@ -337,7 +412,22 @@ export default {
     font-family: "gotham_book";
     src: url("../assets/GothamBook.ttf");
 }
-
+    .titulo_dialog{
+        text-align: center;
+        color:white;
+    }
+    .img{
+        width: 4rem;
+        height: 4rem;
+    }
+    .card_type{
+        padding: .5rem 6rem;
+        margin: .7rem 4rem;
+    }
+    .card_dialog{
+        background: rgb(240,191,55);
+        background: linear-gradient(148deg, rgba(240, 191, 55, 0.822) 0%, rgba(209, 67, 62, 0.822) 100%);
+    }
     .main{
         background-image: url('../assets/descargas.png') !important;
         background-size: cover !important;
@@ -443,7 +533,11 @@ export default {
         font-size:.8rem;
         font-family: 'gotham';
     }
-    @media (max-width: 768px) {
+    @media (max-width: 1100px) {
+    .card_type{
+        padding: .5rem 26%;
+        margin: .7rem 1rem;
+    }
     .main{
         padding: 0px; 
         background-image: url('../assets/contacto.png');

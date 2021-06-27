@@ -3,41 +3,24 @@
         <div class="contain">
             <h1>PQRS</h1>
             <div class="contain_dashboard" > 
-                <v-simple-table>
-                    <template v-slot:default>
-                    <thead>
-                        <tr>
-                        <th class="text-center">
-                            Nombre
-                        </th>
-                        <th class="text-center">
-                            Email
-                        </th>
-                        <th class="text-center">
-                            Tipo
-                        </th>
-                        <th class="text-center">
-                            Celular
-                        </th>
-                        <th class="text-center">
-                            Detalles
-                        </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="pqr in pqrs" :key="pqr._id"
-                        >
-                        <td class="text-center">{{pqr.name}}</td>
-                        <td class="text-center">{{pqr.email}}</td>
-                        <td class="text-center">{{pqr.pqrs}}</td>
-                        <td class="text-center">{{pqr.phone}}</td>
-                        <td class="text-center">
-                            <v-btn outlined color="orange" @click="dialog=true; see_details(pqr.name,pqr.email,pqr.pqrs,pqr.phone,pqr.details,pqr.createdAt);">Ver Detalles</v-btn></td>
-                        </tr>
-                    </tbody>
+                <v-data-table
+                    dense
+                    :headers="headers"
+                    :items="pqrs"
+                    item-key="id"
+                    class="elevation-1 mt-7"
+                >
+                
+                    <template v-slot:[`item.actions`]="{ item }">
+                    <v-btn
+                        color=" white--text"
+                        icon text
+                        @click="dialog=true; see_details(item.name,item.email,item.pqrs,item.phone,item.details,item.createdAt);"
+                    ><v-icon color="rgb(204, 49, 44)" class="">mdi-file-document</v-icon></v-btn>
+                    
                     </template>
-                </v-simple-table>
+                </v-data-table>
+                
                     
             </div>
         </div>
@@ -96,6 +79,17 @@ export default {
             createdAt:''
         },
         info_pqrs:[],
+        headers: [
+        {
+          text: 'Nombre',
+          align: 'center',
+          value: 'name',
+        },
+        { text: 'Email', value: 'email',align: 'center' },
+        { text: 'Tipo', value: 'pqrs',align: 'center' },
+        { text: 'Celular', value: 'phone',align: 'center' },
+        { text: 'Ver más', value: 'actions',align: 'center', sortable: false}
+      ],
     }),
     computed:{
         pqrs:function(){ 

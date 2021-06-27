@@ -9,6 +9,8 @@
                     :items="denuncias"
                     item-key="id"
                     class="elevation-1 mt-7"
+                    :loading="loading"
+                    loading-text="Cargando, por favor espere un momento"
                 >
                 
                     <template v-slot:[`item.actions`]="{ item }">
@@ -20,43 +22,6 @@
                     
                     </template>
                 </v-data-table>
-                <v-simple-table>
-                    <template v-slot:default>
-                    <thead>
-                        <tr>
-                            <th class="text-center">
-                                Nombre
-                            </th>
-                            <th class="text-center">
-                                Email
-                            </th>
-                            <th class="text-center">
-                                Tipo de denuncia
-                            </th>
-                            <th class="text-center">
-                                Detalles
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="denuncia in denuncias" :key="denuncia._id"
-                        >
-                        <td class="text-center">{{denuncia.name}} {{denuncia.lastName}}</td>
-                        <td class="text-center">{{denuncia.email}}</td>
-                        <td class="text-center">{{denuncia.typeOfComplaint}}</td>
-                        <!-- <td class="text-center">{{denuncia.direction}}</td>
-                        <td class="text-center">{{denuncia.country}}</td>
-                        <td class="text-center">{{denuncia.state}}</td>
-                        <td class="text-center">{{denuncia.city}}</td>
-                        <td class="text-center">{{denuncia.coments}}</td> -->
-                        <td class="text-center">
-                            <v-btn outlined color="orange" @click="dialog=true; see_details(denuncia.name,denuncia.email,denuncia.direction,denuncia.country,denuncia.state,denuncia.city,denuncia.typeOfComplaint,denuncia.coments);">Ver Detalles</v-btn>
-                        </td>
-                        </tr>
-                    </tbody>
-                    </template>
-                </v-simple-table>
                     
             </div>
         </div>

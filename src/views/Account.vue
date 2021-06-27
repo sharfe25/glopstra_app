@@ -32,38 +32,38 @@
             <v-divider class="barra"></v-divider>
             
             <v-list dense >
-                <v-list-item @click="dashboard" class="border" :class="opcion_click_home">
+                <v-list-item @click="setOptionMenu('home')" class="border" :class="menu=='home'?'opcion_click':''">
                     <v-list-item-content>
-                        <v-list-item-title class="opcion_menu">Home</v-list-item-title>
+                        <v-list-item-title class="opcion_menu">Inicio</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
             
             <v-divider class="barra"></v-divider>
 
-            <v-list dense >
-                <v-list-item  @click="reports" class="border" :class="opcion_click_report">
+            <!-- <v-list dense >
+                <v-list-item  @click="setOptionMenu('reportes')" class="border" :class="menu=='reportes'?'opcion_click':''">
                     <v-list-item-content>
                         <v-list-item-title class="opcion_menu">Denuncias</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
 
-            <v-divider class="barra"></v-divider>
+            <v-divider class="barra"></v-divider> -->
 
-            <v-list dense >
+            <!-- <v-list dense >
                 <v-list-item  @click="process" class="border" :class="opcion_click_process">
                     <v-list-item-content>
                         <v-list-item-title class="opcion_menu">Procesos de atención</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
                 
-            </v-list>
+            </v-list> 
 
-            <v-divider class="barra"></v-divider>
+            <v-divider class="barra"></v-divider>-->
 
             <v-list dense >
-                <v-list-item  @click="experiences" class="border" :class="opcion_click_experiences">
+                <v-list-item  @click="setOptionMenu('experiencias')" class="border" :class="menu=='experiencias'?'opcion_click':''">
                     <v-list-item-content>
                         <v-list-item-title class="opcion_menu">Experiencias</v-list-item-title>
                     </v-list-item-content>
@@ -72,20 +72,53 @@
             </v-list>
 
             <v-divider class="barra"></v-divider>
-            
-            <v-list dense >
-                        <v-list-item  @click="contact" class="border" :class="opcion_click_contact">
-                            <v-list-item-content>
-                                <v-list-item-title class="opcion_menu">PQRS</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        
-                    </v-list>
 
-                    <v-divider class="barra"></v-divider>
+            <v-list dense >
+                <v-list-item  @click="setOptionMenu('contact')" class="border" :class="menu=='contact'?'opcion_click':''">
+                    <v-list-item-content>
+                        <v-list-item-title class="opcion_menu">PQRS</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                
+            </v-list>
+
+            <v-divider class="barra"></v-divider>
+
+                <v-list dense >
+                <v-list-item  @click="setOptionMenu('usuarios')" class="border" :class="menu=='usuarios'?'opcion_click':''">
+                    <v-list-item-content>
+                        <v-list-item-title class="opcion_menu">Usuarios</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                
+            </v-list>
+
+            <v-divider class="barra"></v-divider>
+
+                <v-list dense >
+                <v-list-item  @click="setOptionMenu('aforo')" class="border" :class="menu=='aforo'?'opcion_click':''">
+                    <v-list-item-content>
+                        <v-list-item-title class="opcion_menu">Aforo</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                
+            </v-list>
+
+            <v-divider class="barra"></v-divider>
+
+            <v-list dense >
+                <v-list-item  @click="setOptionMenu('reportesS')" class="border" :class="menu=='reportesS'?'opcion_click':''">
+                    <v-list-item-content>
+                        <v-list-item-title class="opcion_menu">Reportes de seguridad</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                
+            </v-list>
+
+            <v-divider class="barra"></v-divider>
             
             <v-list dense >
-                <v-list-item  @click="config" class="border"  :class="opcion_click_config">
+                <v-list-item  @click="setOptionMenu('config')" class="border"  :class="menu=='config'?'opcion_click':''">
                     
                     <v-list-item-content>
                         <v-list-item-title class="opcion_menu config">Configuración</v-list-item-title>
@@ -105,6 +138,7 @@
                     <v-navigation-drawer
                     absolute
                     permanent
+                    
                     class="navigation_drawer"
                     >
                     <template v-slot:prepend>
@@ -118,10 +152,10 @@
                             </v-list-item-content>
                         </v-list-item>
                     </template>
-                    <v-list-item class="d-flex justify-center" >
+                    <!-- <v-list-item class="d-flex justify-center" >
                         <img class="user_img" src="../assets/user.png">
                         
-                    </v-list-item>
+                    </v-list-item> -->
                     <v-list-item class="d-flex justify-center" >
                         <v-list-item-content>
                             <v-list-item-title class="d-flex justify-center glopstra">{{name}}</v-list-item-title>
@@ -131,7 +165,7 @@
                     <v-divider class="barra"></v-divider>
                     
                     <v-list dense >
-                        <v-list-item @click="dashboard" class="border" :class="opcion_click_home">
+                        <v-list-item @click="setOptionMenu('home')" class="border" :class="menu=='home'?'opcion_click':''">
                             <v-list-item-content>
                                 <v-list-item-title class="opcion_menu">Inicio</v-list-item-title>
                             </v-list-item-content>
@@ -140,29 +174,29 @@
                     
                     <v-divider class="barra"></v-divider>
 
-                    <v-list dense >
-                        <v-list-item  @click="reports" class="border" :class="opcion_click_report">
+                    <!-- <v-list dense >
+                        <v-list-item  @click="setOptionMenu('reportes')" class="border" :class="menu=='reportes'?'opcion_click':''">
                             <v-list-item-content>
                                 <v-list-item-title class="opcion_menu">Denuncias</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
 
-                    <v-divider class="barra"></v-divider>
+                    <v-divider class="barra"></v-divider> -->
 
-                    <v-list dense >
+                    <!-- <v-list dense >
                         <v-list-item  @click="process" class="border" :class="opcion_click_process">
                             <v-list-item-content>
                                 <v-list-item-title class="opcion_menu">Procesos de atención</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                         
-                    </v-list>
+                    </v-list> 
 
-                    <v-divider class="barra"></v-divider>
+                    <v-divider class="barra"></v-divider>-->
 
                     <v-list dense >
-                        <v-list-item  @click="experiences" class="border" :class="opcion_click_experiences">
+                        <v-list-item  @click="setOptionMenu('experiencias')" class="border" :class="menu=='experiencias'?'opcion_click':''">
                             <v-list-item-content>
                                 <v-list-item-title class="opcion_menu">Experiencias</v-list-item-title>
                             </v-list-item-content>
@@ -173,7 +207,7 @@
                     <v-divider class="barra"></v-divider>
 
                     <v-list dense >
-                        <v-list-item  @click="contact" class="border" :class="opcion_click_contact">
+                        <v-list-item  @click="setOptionMenu('contact')" class="border" :class="menu=='contact'?'opcion_click':''">
                             <v-list-item-content>
                                 <v-list-item-title class="opcion_menu">PQRS</v-list-item-title>
                             </v-list-item-content>
@@ -182,10 +216,43 @@
                     </v-list>
 
                     <v-divider class="barra"></v-divider>
+
+                     <v-list dense >
+                        <v-list-item  @click="setOptionMenu('usuarios')" class="border" :class="menu=='usuarios'?'opcion_click':''">
+                            <v-list-item-content>
+                                <v-list-item-title class="opcion_menu">Usuarios</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        
+                    </v-list>
+
+                    <v-divider class="barra"></v-divider>
+
+                     <v-list dense >
+                        <v-list-item  @click="setOptionMenu('aforo')" class="border" :class="menu=='aforo'?'opcion_click':''">
+                            <v-list-item-content>
+                                <v-list-item-title class="opcion_menu">Aforo</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        
+                    </v-list>
+
+                    <v-divider class="barra"></v-divider>
                     
+                    <v-list dense >
+                        <v-list-item  @click="setOptionMenu('reportesS')" class="border" :class="menu=='reportesS'?'opcion_click':''">
+                            <v-list-item-content>
+                                <v-list-item-title class="opcion_menu">Reportes de seguridad</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        
+                    </v-list>
+
+                    <v-divider class="barra"></v-divider>
+
                     <template v-slot:append>
                         <v-list dense >
-                        <v-list-item  @click="config" class="border"  :class="opcion_click_config">
+                        <v-list-item  @click="setOptionMenu('config')" class="border"  :class="menu=='config'?'opcion_click':''">
                             <v-list-item-icon class="avatar_g">
                                 <img class="icon_config" src="../assets/config.png">
                             </v-list-item-icon>
@@ -220,22 +287,31 @@
                     
                     </v-row>
                     
-                    <div class="dashboard" :class="[ocultar_home,opcion_click_home]">
+                    <div class="dashboard" v-if="menu=='home'">
                         <Home/>
                     </div>
-                    <div class="reports" :class="[ocultar_report,opcion_click_report]">
+                    <div class="reports" v-if="menu=='reportes'">
                         <Reportes/>
                     </div>
-                    <div class="process" :class="[ocultar_process,opcion_click_process]">
+                    <!-- <div class="process" v-if="menu==''" :class="[ocultar_process,opcion_click_process]">
                         <Proceso/>
-                    </div>
-                    <div class="experiences" :class="[ocultar_experiences,opcion_click_experiences]">
+                    </div> -->
+                    <div class="experiences" v-if="menu=='experiencias'">
                         <Experiencias/>
                     </div>
-                    <div class="contact" :class="[ocultar_contact,opcion_click_contact]">
+                    <div class="contact" v-if="menu=='contact'">
                         <Contact/>
                     </div>
-                    <div class="config" :class="[ocultar_config,opcion_click_config]">
+                    <div class="usuario" v-if="menu=='usuarios'">
+                        <Usuarios/>
+                    </div>
+                    <div class="aforo" v-if="menu=='aforo'">
+                        <Aforo/>
+                    </div>
+                    <div class="reportesS" v-if="menu=='reportesS'">
+                        <ReportesSeguridad/>
+                    </div>
+                    <div class="config" v-if="menu=='config'">
                         
                     </div>
                 </v-col>
@@ -246,12 +322,16 @@
 
 <script>
 // @ is an alias to /src
+import {mapActions,mapState,mapMutations} from 'vuex';
 import axios from "axios";
 import Home from '../components/Home.vue';
 import Proceso from '../components/Proceso.vue';
 import Reportes from '../components/Reportes.vue';
 import Experiencias from '../components/Experiencias.vue';
 import Contact from '../components/Contact.vue';
+import Usuarios from '../components/Usuarios.vue';
+import Aforo from '../components/Aforo.vue';
+import ReportesSeguridad from '../components/ReportesSeg.vue';
 
 export default {
   name: 'Account',
@@ -261,108 +341,23 @@ export default {
     Reportes,
     Experiencias,
     Contact,
+    Usuarios,
+    Aforo,
+    ReportesSeguridad,
   },
   data:()=>({
         drawer:false,
         menu_movil:false,
-        name:'',
-        opcion_click_home:'',
-        opcion_click_report:'',
-        opcion_click_process:'',
-        opcion_click_config:'',
-        opcion_click_experiences:'',
-        opcion_click_contact:'',
-        ocultar_home:'',
-        ocultar_config:'',
-        ocultar_process:'',
-        ocultar_report:'',
-        ocultar_experiences:'',
-        ocultar_contact:'',
+        prueba:false,
     }),
     methods:{
-        dashboard(){
-            this.opcion_click_home='opcion_click_home';
-            this.opcion_click_experiences='';
-            this.opcion_click_report='';
-            this.opcion_click_process='';
-            this.opcion_click_contact='';
-            this.opcion_click_config='';
-            this.ocultar_config='ocultar';
-            this.ocultar_process='ocultar';
-            this.ocultar_report='ocultar';
-            this.ocultar_experiences='ocultar';
-            this.ocultar_contact='ocultar';
-        },
-        reports(){
-            this.opcion_click_report='opcion_click_report';
-            this.opcion_click_experiences='';
-            this.opcion_click_home='';
-            this.opcion_click_process='';
-            this.opcion_click_config='';
-            this.opcion_click_contact='';
-            this.ocultar_home='ocultar';
-            this.ocultar_config='ocultar';
-            this.ocultar_process='ocultar';
-            this.ocultar_experiences='ocultar';
-            this.ocultar_contact='ocultar';
-        },
-        process(){
-            this.opcion_click_process='opcion_click_process';
-            this.opcion_click_experiences='';
-            this.opcion_click_report='';
-            this.opcion_click_home='';
-            this.opcion_click_config='';
-            this.opcion_click_contact='';
-            this.ocultar_home='ocultar';
-            this.ocultar_config='ocultar';
-            this.ocultar_report='ocultar';
-            this.ocultar_experiences='ocultar';
-            this.ocultar_contact='ocultar';
-        },
-        experiences(){
-            this.opcion_click_experiences='opcion_click_experiences';
-            this.opcion_click_process='';
-            this.opcion_click_report='';
-            this.opcion_click_home='';
-            this.opcion_click_config='';
-            this.opcion_click_contact='';
-            this.ocultar_home='ocultar';
-            this.ocultar_config='ocultar';
-            this.ocultar_report='ocultar';
-            this.ocultar_process='ocultar'; 
-            this.ocultar_contact='ocultar';
-        },
-        contact(){
-            this.opcion_click_contact='opcion_click_contact';
-            this.opcion_click_experiences='';
-            this.opcion_click_process='';
-            this.opcion_click_report='';
-            this.opcion_click_home='';
-            this.opcion_click_config='';
-            this.ocultar_home='ocultar';
-            this.ocultar_config='ocultar';
-            this.ocultar_report='ocultar';
-            this.ocultar_process='ocultar';
-            this.ocultar_experiences='ocultar';
-        },
-        config(){
-            this.opcion_click_config='opcion_click_config';
-            this.opcion_click_experiences='';
-            this.opcion_click_report='';
-            this.opcion_click_home='';
-            this.opcion_click_process='';
-            this.opcion_click_contact='';
-            this.ocultar_home='ocultar';
-            this.ocultar_process='ocultar';
-            this.ocultar_report='ocultar';
-            this.ocultar_experiences='ocultar';
-            this.ocultar_contact='ocultar';
-        },
+        ...mapActions(['getInfoUser']),
+        ...mapMutations(['setOptionMenu']),
         logout(){
             let email= {email: localStorage.getItem('email')}
             const path = 'http://160.153.253.91:3200/logout';
             axios.post(path, email).then((result) => {
-                if (result.data.resp==="exito") {
+                if (result.data.res==="OK") {
                     localStorage.removeItem('email')
                     localStorage.removeItem('token')
                     this.$router.push('/LogIn');
@@ -374,8 +369,21 @@ export default {
             });
         
         },
+        beforeWindowUnload(){
+            console.log('before')
+            this.prueba=setTimeout(function(){ 
+                    console.log('hola entreeeeee') 
+            }, 3000);
+        },
+        remove(){
+            console.log('remove')
+            clearTimeout(this.prueba)
+        }
     },
     computed:{
+        ...mapState([
+            'menu','name'
+        ]),
         movil() {
             switch (this.$vuetify.breakpoint.name) {
                 case 'xs': this.menu_movil=true; return true
@@ -385,9 +393,17 @@ export default {
                 case 'xl':this.menu_movil=false; return false
             }
         },
+         
+    },
+    created() {
+        //Cuando vuelves a la pagina
+        window.addEventListener('focus', this.remove)
+        //Cuando te vas de la pestaña
+        window.addEventListener('blur', this.beforeWindowUnload)
+        // window.addEventListener('beforeunload', this.beforeWindowUnload)
     },
     mounted(){
-        this.dashboard();
+        this.getInfoUser({email:localStorage.getItem('email')})
     }
 }
 
@@ -414,8 +430,11 @@ export default {
     height: 1.5rem;
     margin:.5rem 1rem;
 }
+.v-navigation-drawer__content{
+    overflow: revert !important;
+}
 .navigation_drawer{
-    
+    overflow: revert;
     background: rgb(240,191,55);
     background: linear-gradient(148deg, rgba(240,191,55,1) 0%, rgba(209,68,62,1) 100%);
     
@@ -461,15 +480,15 @@ export default {
     color:white;
     margin-left:2.5rem;
 }
-.opcion_click_home,.opcion_click_report,.opcion_click_process, .opcion_click_config, .opcion_click_experiences,.opcion_click_contact{
+.opcion_click{
     background-color: rgba(255, 255, 255, 0.39);
     color:rgba(209,68,62,1);
     display: inherit !important;
 }
-.opcion_click_home.border,.opcion_click_report.border,.opcion_click_process.border, .opcion_click_config.border,.opcion_click_experiences.border,.opcion_click_contact.border{
+.opcion_click.border{
     border-left: 5px solid #D1443E;
 }
-.opcion_click_home .opcion_menu,.opcion_click_report .opcion_menu,.opcion_click_process .opcion_menu, .opcion_click_config .opcion_menu, .opcion_click_experiences .opcion_menu, .opcion_click_contact .opcion_menu{
+.opcion_click .opcion_menu{
     padding-top: .2rem;
     color:rgb(204, 49, 44);
 }

@@ -2,7 +2,7 @@
     <v-app class="main">
         <div class="contain">
             <h1>Dashboard</h1>
-            <div class="contain_dashboard" >
+            <div v-if="false" class="contain_dashboard" >
                 <v-row no-gutters justify="space-around">
                     <v-col
                         cols="12"
@@ -34,12 +34,6 @@
                         <v-card-text class="headline font-weight-bold white--text text-center mt-4">
                             {{descargas}}
                         </v-card-text>
-
-                        <!-- <v-list-item-content class="py-1">
-                            <v-list-item-title class="my-0 overline text-center">
-                                Totales de Glopstra
-                            </v-list-item-title>
-                        </v-list-item-content> -->
                         </v-card>
                     </v-col>
                     <v-col
@@ -73,12 +67,6 @@
                         <v-card-text class="headline font-weight-bold  text-center mt-4">
                             {{users}}
                         </v-card-text>
-
-                        <!-- <v-list-item-content class="py-1">
-                            <v-list-item-title class="my-0 overline text-center">
-                                En Glopstra
-                            </v-list-item-title>
-                        </v-list-item-content> -->
                         </v-card>
                     </v-col>
                     <v-col
@@ -111,12 +99,6 @@
                         <v-card-text class="headline font-weight-bold text-center mt-4">
                             {{family}}
                         </v-card-text>
-
-                        <!-- <v-list-item-content class="py-1">
-                            <v-list-item-title class="my-0 overline text-center">
-                                Unidos en  Glopstra
-                            </v-list-item-title>
-                        </v-list-item-content> -->
                         </v-card>
                     </v-col>
                 </v-row>
@@ -187,27 +169,6 @@
 
                         </v-card>
                     </v-col>
-                    <!-- <v-col
-                        cols="12"
-                        sm="12"
-                        md="3"
-                    >
-                        <v-card
-                        class="card_datos  pl-4 pa-2"
-                        outlined
-                        tile
-                        elevation="4"
-                        >
-                        <div class="overline mb-0">
-                            Ciudadanos
-                        </div>
-                        
-                        <v-card-text class="headline font-weight-bold text-center mt-0 mb-3">
-                            {{citizens}}
-                        </v-card-text>
-
-                        </v-card>
-                    </v-col> -->
                 </v-row>
                 <v-row justify="space-around" class="mb-3">
                     <v-col 
@@ -317,6 +278,152 @@
                     </v-col>
                 </v-row>
             </div>
+             <div v-if=true class="contain_dashboard" >
+                <v-row no-gutters justify="space-around">
+                    <v-row no-gutters justify="space-around">
+                        <v-col
+                            cols="12"
+                            sm="12"
+                            md="3"
+                        >
+                            <v-card
+                            class="card_datos gradiente pl-4 pa-2"
+                            outlined
+                            tile
+                            elevation="4"
+                            >
+                                <div class="overline mb-0">
+                                    Capacidad de aforo
+                                </div>
+                                <v-card-text class="headline font-weight-bold white--text text-center mt-0">
+                                    {{infoAforo.capacityCompany}}
+                                </v-card-text>
+                            </v-card>
+                        </v-col>
+                        <v-col
+                            cols="12"
+                            sm="12"
+                            md="3"
+                            
+                        >
+                            <v-card
+                            class="card_datos pl-4 pa-2"
+                            outlined
+                            tile
+                            elevation="4"
+                            >
+                            <v-row no-gutters>
+                                <v-col
+                                    sm="8"
+                                >
+                                    <div class="overline mb-4">
+                                        Aforo actual 
+                                    </div>
+                                </v-col>
+                                <v-col
+                                    sm="4"
+                                    class="d-flex col"
+                                >
+                                    <img class=" icon mt-1 mr-3" src="../assets/dashboard/view.png">
+                                </v-col>
+                            </v-row>
+                            
+                            <v-card-text class="headline font-weight-bold  text-center mt-4">
+                                {{infoAforo.capacityActual}}
+                            </v-card-text>
+
+                            </v-card>
+                        </v-col>
+                        <v-col
+                            cols="12"
+                            sm="12"
+                            md="3"
+                        >
+                            <v-card
+                            class="card_datos  pl-4 pa-2"
+                            outlined
+                            tile
+                            elevation="4"
+                            >
+                            <v-row no-gutters>
+                                <v-col
+                                    sm="8"
+                                >
+                                    <div class="overline mb-4">
+                                        Estado
+                                    </div>
+                                </v-col>
+                                <v-col
+                                    sm="4"
+                                    class="d-flex col"
+                                >
+                                    <img class=" mt-1 mr-3 icon" src="../assets/dashboard/share.png">
+                                </v-col>
+                            </v-row>
+                            
+                            <v-card-text class="headline font-weight-bold text-center mt-4">
+                                {{infoAforo.status}}
+                            </v-card-text>
+                            </v-card>
+                        </v-col>
+                </v-row>
+                </v-row>
+               
+                <v-row justify="space-around" class="mb-3">
+                    <v-col 
+                    cols="12"
+                    sm="12"
+                    md="7"
+                    class="">
+                        <v-card
+                            elevation="2"
+                            class="card_graf pa-3"
+                        >
+                        
+                        
+                        
+                        
+                        </v-card>
+                    </v-col>
+                    <v-col 
+                    cols="12"
+                    sm="12"
+                    md="4">
+                        <v-card
+                        elevation="0"
+                        class="card_char_pie"
+                        >
+                        <v-list-item-title class="overline text-center">
+                            Porcentaje de aforo
+                        </v-list-item-title>
+                            <GChart
+                                class="pieChart"
+                                type="PieChart"
+                                :data="[['Ocupación',infoAforo.percentOcupation],['Libre',infoAforo.percentFree]]"
+                                :options="chartOptionsEmpresa"
+                                ref="gChart"
+                            />
+                            <v-container class="py-0">
+                                <v-row
+                                    align="center"
+                                    justify="center"
+                                >
+                                    <v-col
+                                    v-for="selection in selections"
+                                    :key="selection"
+                                    class="shrink"
+                                    
+                                    >
+                                    <v-chip text-color="white" class="body-2" :color="color_select">
+                                        {{ selection }}
+                                    </v-chip>
+                                    </v-col>
+                                </v-row>
+                                </v-container>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </div>
         </div>
     </v-app>
 </template>
@@ -324,6 +431,7 @@
 <script>
 // @ is an alias to /src
 import axios from "axios";
+import {mapActions,mapState,mapMutations} from 'vuex';
 import { GChart } from 'vue-google-charts'
 
 export default {
@@ -345,6 +453,19 @@ export default {
                 4: { color: 'rgb(220, 25, 44)' ,offset: 0},
                 5: { color: '#F9592F' ,offset: 0},
                 6: { color: '#E86142' ,offset: 0},   
+            },
+            pieSliceText: 'percentage',
+            pieSliceTextStyle:{color: 'white', fontName: 'Roboto', fontSize: 18},
+            backgroundColor:'transparent',
+            chartArea:{width:'80%',height:'75%'},
+            height:300,  
+            tooltip:{trigger:'focus'}
+        },
+        chartOptionsEmpresa: {
+            legend: 'none',
+            slices: {
+                0: { color: 'rgb(126, 126, 126)' ,offset: 0},
+                1: { color: '#F4CA41' ,offset: 0},
             },
             pieSliceText: 'percentage',
             pieSliceTextStyle:{color: 'white', fontName: 'Roboto', fontSize: 18},
@@ -375,6 +496,7 @@ export default {
     }),
     
     methods:{
+        ...mapActions(['getAforo']),
         mostrar_modulos_years(){
  
             if (this.modulo_uno==true) {
@@ -459,6 +581,9 @@ export default {
       
     },
     computed:{
+        ...mapState([
+            'infoAforo'
+        ]),
         sliceSelected(){
             this.chartEvents={
                 select: () => {           
@@ -573,7 +698,7 @@ export default {
         
     },
     mounted () {
-
+        this.getAforo({email:localStorage.getItem('email')});
     },
     created () {
        this.mostrar_modulos_years();
